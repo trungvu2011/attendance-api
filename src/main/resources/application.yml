@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    username: root
+    password: trung2011@vd
+    url: jdbc:mysql://localhost:3306/attendance
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
