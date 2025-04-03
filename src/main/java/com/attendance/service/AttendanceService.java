@@ -1,4 +1,4 @@
-package com.attendance.services;
+package com.attendance.service;
 
 import com.attendance.entities.Attendance;
 import com.attendance.repositories.AttendanceRepository;
