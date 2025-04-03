@@ -20,6 +20,6 @@ public class ClassRoom {
     private String className;
 
     @ManyToOne
-    @JoinColumn(name = "teacherId")
+    @JoinColumn(name = "teacherId", referencedColumnName = "userId")
     private User teacher;
 }

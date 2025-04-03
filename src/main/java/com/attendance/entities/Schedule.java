@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
@@ -15,9 +16,10 @@ import java.time.LocalDateTime;
 public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID scheduleId;
 
     @ManyToOne
-    @JoinColumn(name = "classId")
+    @JoinColumn(name = "classId", referencedColumnName = "classId")
     private  ClassRoom classRoom;
 
     private LocalDateTime startTime;

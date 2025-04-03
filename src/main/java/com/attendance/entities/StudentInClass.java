@@ -18,7 +18,7 @@ public class StudentInClass {
     private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "studentId")
+    @JoinColumn(name = "studentId", referencedColumnName = "userId")
     private User student;
 
     @ManyToOne

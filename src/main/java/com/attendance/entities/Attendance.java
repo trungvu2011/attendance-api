@@ -18,11 +18,11 @@ public class Attendance {
     private UUID attendanceId;
 
     @ManyToOne
-    @JoinColumn(name = "scheduleId")
+    @JoinColumn(name = "scheduleId", referencedColumnName = "scheduleId")
     private Schedule schedule;
 
     @ManyToOne
-    @JoinColumn(name = "studentId")
+    @JoinColumn(name = "studentId", referencedColumnName = "userId")
     private User student;
 
     private String citizenId;
