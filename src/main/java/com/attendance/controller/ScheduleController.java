@@ -1,7 +1,7 @@
-package com.attendance.controllers;
+package com.attendance.controller;
 
 import com.attendance.entities.Schedule;
-import com.attendance.services.ScheduleService;
+import com.attendance.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
