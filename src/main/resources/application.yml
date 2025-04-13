@@ -5,6 +5,18 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     url: jdbc:mysql://${SERVER_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      connection-timeout: 10000
+      maximum-pool-size: 5
+      minimum-idle: 1
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
   jpa:
     hibernate:
       ddl-auto: update
@@ -12,3 +24,14 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+
+# Cấu hình JWT
+app:
+  jwt:
+    # Sử dụng một chuỗi bí mật phức tạp hơn trong môi trường thực tế
+    secret: QHLf1KA6zJ0s1t5hyEysuWQP9gyPqqSdL3lBdXhyzxI8z5HRL0qYOekMkJ157xUi
+    # Thời gian hết hạn access token: 1 giờ
+    expiration-ms: 3600000
+    # Thời gian hết hạn refresh token: 7 ngày
+    refresh-expiration-ms: 604800000
