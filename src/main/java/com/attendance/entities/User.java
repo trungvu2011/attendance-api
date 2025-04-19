@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +25,11 @@ public class User {
     private String name;
     private String email;
     private String password;
+
+    @NotBlank(message = "CCCD không được bỏ trống")
+    @Pattern(regexp = "\\d{12}", message = "CCCD phải gồm đúng 12 chữ số")
     private String citizenId;
+
     private String faceImage;
 
     private Role role;
