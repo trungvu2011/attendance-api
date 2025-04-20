@@ -4,6 +4,7 @@ import com.attendance.dto.auth.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -32,7 +33,6 @@ public class TokenValidationFilter extends OncePerRequestFilter {
     // Danh sách các URL public không cần token
     private static final List<String> PUBLIC_URLS = Arrays.asList(
             "/api/auth/login",
-            "/api/auth/register",
             "/api/user/register",
             "/error"
     );
@@ -56,17 +56,14 @@ public class TokenValidationFilter extends OncePerRequestFilter {
         }
         
         try {
-            String authHeader = request.getHeader("Authorization");
+            String token = getTokenFromRequest(request);
             
-            // Kiểm tra nếu không có header Authorization
-            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                logger.error("Authorization header missing or invalid format");
+            // Kiểm tra nếu không có token
+            if (token == null) {
+                logger.error("Token missing from both Authorization header and cookies");
                 sendErrorResponse(response, "Không tìm thấy token xác thực");
                 return;
             }
-            
-            // Lấy token từ header
-            String token = authHeader.substring(7);
             
             // Validate token
             if (!jwtUtils.validateJwtToken(token)) {
@@ -91,6 +88,30 @@ public class TokenValidationFilter extends OncePerRequestFilter {
             logger.error("Could not set user authentication: {}", e.getMessage());
             sendErrorResponse(response, "Lỗi xác thực: " + e.getMessage());
         }
+    }
+    
+    /**
+     * Trích xuất token từ request, ưu tiên lấy từ Authorization header,
+     * nếu không có sẽ tìm trong cookies
+     */
+    private String getTokenFromRequest(HttpServletRequest request) {
+        // Thử lấy token từ header Authorization
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7);
+        }
+        
+        // Nếu không có header, kiểm tra cookie
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("access_token".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        
+        return null;
     }
     
     private boolean isPublicUrl(String url) {
