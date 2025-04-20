@@ -4,11 +4,15 @@ import com.attendance.entities.Attendance;
 import com.attendance.entities.User;
 import com.attendance.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -70,5 +74,32 @@ public class AttendanceController {
     public ResponseEntity<Map<User, Double>> getAttendanceRateByClass(@PathVariable UUID classId) {
         Map<User, Double> rates = attendanceService.getAttendanceRateByClass(classId);
         return new ResponseEntity<>(rates, HttpStatus.OK);
+    }
+
+    //Lấy lịch sử điểm danh của một sinh viên
+    @GetMapping("/student/{userId}")
+    public ResponseEntity<List<Attendance>> getAttendanceHistoryByStudent(@PathVariable UUID userID){
+        List<Attendance> hisAttendance = attendanceService.getAttendanceHistoryByStudent(userID);
+        return new ResponseEntity<>(hisAttendance, HttpStatus.OK);
+    }
+
+    @GetMapping("/absenceCount/{classId}")
+    public ResponseEntity<Map<User, Long>> getAbsenceCountByClass(@PathVariable UUID classId){
+        Map<User, Long>  mapAbsenceCount = attendanceService.getAbsenceCountByClass(classId);
+        return new ResponseEntity<>(mapAbsenceCount, HttpStatus.OK);
+    }
+
+    @GetMapping("/export-summary/{classId}")
+    public ResponseEntity<InputStreamResource> exportAttendanceSummary(@PathVariable UUID classId) {
+        ByteArrayInputStream excelStream = attendanceService.exportAttendanceSummaryToExcel(classId);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=attendance_summary.xlsx");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(new InputStreamResource(excelStream));
     }
 }
