@@ -2,6 +2,7 @@ package com.attendance.controller;
 
 import com.attendance.dto.auth.*;
 import com.attendance.entities.RefreshToken;
+import com.attendance.entities.User;
 import com.attendance.security.jwt.JwtUtils;
 import com.attendance.security.service.UserDetailsImpl;
 import com.attendance.service.RefreshTokenService;
@@ -91,11 +92,11 @@ public class AuthController {
                                 if (role.startsWith("ROLE_")) {
                                     role = role.substring(5);
                                 }
-                                return role.equals("STUDENT") ? 
-                                        com.attendance.entities.User.Role.STUDENT : 
-                                        com.attendance.entities.User.Role.TEACHER;
+                                return role.equals("CANDIDATE") ?
+                                        User.Role.CANDIDATE :
+                                        User.Role.ADMIN;
                             })
-                            .orElse(com.attendance.entities.User.Role.STUDENT)
+                            .orElse(User.Role.CANDIDATE)
             );
             
             // Thêm hướng dẫn sử dụng token trong response

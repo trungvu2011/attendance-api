@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,7 +16,8 @@ public class UpdateUserDTO {
     
     @Email(message = "Email không hợp lệ")
     private String email;
-    
+
+    private LocalDate birth;
     private String password;
     private String citizenId;
     private String faceImage;
@@ -31,11 +34,11 @@ public class UpdateUserDTO {
         if(this.password != null && !this.password.isEmpty()) {
             user.setPassword(this.password);
         }
+        if(this.birth != null) {
+            user.setBirth(this.birth);
+        }
         if(this.citizenId != null) {
             user.setCitizenId(this.citizenId);
-        }
-        if(this.faceImage != null) {
-            user.setFaceImage(this.faceImage);
         }
         if(this.role != null) {
             user.setRole(this.role);

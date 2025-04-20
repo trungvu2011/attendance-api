@@ -25,7 +25,7 @@ public class CreateUserDTO {
     
     private String citizenId;
     private String faceImage;
-    private User.Role role = User.Role.STUDENT;
+    private User.Role role = User.Role.CANDIDATE;
     
     // Phương thức chuyển đổi từ DTO sang Entity
     public User toEntity() {
@@ -34,7 +34,6 @@ public class CreateUserDTO {
         user.setEmail(this.email);
         user.setPassword(this.password);
         user.setCitizenId(this.citizenId);
-        user.setFaceImage(this.faceImage);
         user.setRole(this.role);
         return user;
     }

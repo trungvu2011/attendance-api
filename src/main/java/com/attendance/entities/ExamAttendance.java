@@ -12,16 +12,20 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter
-public class StudentInClass {
+public class ExamAttendance {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private UUID attendanceId;
 
     @ManyToOne
-    @JoinColumn(name = "studentId", referencedColumnName = "userId")
-    private User student;
+    @JoinColumn(name = "candidateID", referencedColumnName = "candidateId")
+    private User candidate;
 
     @ManyToOne
-    @JoinColumn(name = "classId")
-    private ClassRoom classRoom;
+    @JoinColumn(name = "examId", referencedColumnName = "examId")
+    private Exam exam;
+
+    private boolean citizenCardVerified;
+
+    private boolean faceVerified;
 }

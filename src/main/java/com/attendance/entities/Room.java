@@ -1,7 +1,8 @@
 package com.attendance.entities;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,18 +14,14 @@ import java.util.UUID;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
-public class CitizenCardData {
-
+@Getter
+@Setter
+public class Room {
     @Id
-    private UUID id;
-
-    @Column(unique = true)
-    private String citizenId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID roomID;
 
     private String name;
 
-    private String faceImage;
-
-    private java.time.LocalDate dob;
+    private String building;
 }

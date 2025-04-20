@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
@@ -25,17 +26,16 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private LocalDate birth;
 
     @NotBlank(message = "CCCD không được bỏ trống")
     @Pattern(regexp = "\\d{12}", message = "CCCD phải gồm đúng 12 chữ số")
     private String citizenId;
 
-    private String faceImage;
-
     private Role role;
 
     public enum Role {
-        STUDENT, TEACHER
+        CANDIDATE, ADMIN
     }
 
 }

@@ -18,23 +18,18 @@ public class ScheduleService {
         this.scheduleRepository = scheduleRepository;
     }
 
-    // Lấy danh sách tất cả lịch học của một lớp
-    public List<Schedule> getSchedulesByClass(UUID classId) {
-        return scheduleRepository.findByClassRoom_ClassId(classId);
-    }
-
-    // Tạo mới một lịch học
+    // Tạo mới một ca thi
     public Schedule createSchedule(Schedule schedule) {
         return scheduleRepository.save(schedule);
     }
 
-    // Cập nhật lịch học
+    // Cập nhật ca thi
     public Schedule updateSchedule(Schedule schedule) {
         return scheduleRepository.save(schedule);
     }
 
-    // Xóa lịch học
-    public void deleteSchedule(UUID scheduleId) {
+    // Xóa lịch ca thi
+    public void deleteSchedule(String scheduleId) {
         scheduleRepository.deleteById(scheduleId);
     }
 }

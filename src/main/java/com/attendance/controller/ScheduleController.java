@@ -21,13 +21,6 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
-    // Lấy tất cả lịch học của một lớp
-    @GetMapping("/class/{classId}")
-    public ResponseEntity<List<Schedule>> getSchedulesByClass(@PathVariable UUID classId) {
-        List<Schedule> schedules = scheduleService.getSchedulesByClass(classId);
-        return new ResponseEntity<>(schedules, HttpStatus.OK);
-    }
-
     // Tạo mới một lịch học
     @PostMapping
     public ResponseEntity<Schedule> createSchedule(@RequestBody Schedule schedule) {
@@ -37,7 +30,7 @@ public class ScheduleController {
 
     // Cập nhật lịch học
     @PutMapping("/{scheduleId}")
-    public ResponseEntity<Schedule> updateSchedule(@PathVariable UUID scheduleId, @RequestBody Schedule schedule) {
+    public ResponseEntity<Schedule> updateSchedule(@PathVariable String scheduleId, @RequestBody Schedule schedule) {
         schedule.setScheduleId(scheduleId);
         Schedule updatedSchedule = scheduleService.updateSchedule(schedule);
         return new ResponseEntity<>(updatedSchedule, HttpStatus.OK);

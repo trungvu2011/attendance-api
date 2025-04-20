@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -21,7 +22,8 @@ public class UserDTO {
     @NotBlank(message = "Email không được để trống")
     @Email(message = "Email không hợp lệ")
     private String email;
-    
+
+    private LocalDate birth;
     private String citizenId;
     private String faceImage;
     private User.Role role;
@@ -32,8 +34,8 @@ public class UserDTO {
         dto.setUserId(user.getUserId());
         dto.setName(user.getName());
         dto.setEmail(user.getEmail());
+        dto.setBirth(user.getBirth());
         dto.setCitizenId(user.getCitizenId());
-        dto.setFaceImage(user.getFaceImage());
         dto.setRole(user.getRole());
         return dto;
     }
