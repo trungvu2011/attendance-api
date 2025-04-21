@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.net.URL;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -19,10 +16,10 @@ import java.util.UUID;
 public class MonitoringLogs {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID monitoringlogsId;
+    private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "candidateID", referencedColumnName = "candidateId")
+    @JoinColumn(name = "candidateId", referencedColumnName = "userId")
     private User candidate;
 
     @ManyToOne
@@ -34,11 +31,11 @@ public class MonitoringLogs {
     @Enumerated(EnumType.STRING)
     private CameraEvent cameraEvent;
     
-    private URL imageURL;
+    private String faceUrl;
     
     public enum CameraEvent {
         OK,
-        MUTIPLE_FACE,
+        MULTIPLE_FACES,
         NOT_DETECTED
     }
 }

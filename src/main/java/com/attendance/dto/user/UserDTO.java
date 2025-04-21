@@ -25,7 +25,6 @@ public class UserDTO {
 
     private LocalDate birth;
     private String citizenId;
-    private String faceImage;
     private User.Role role;
     
     // Constructor để chuyển từ entity sang DTO

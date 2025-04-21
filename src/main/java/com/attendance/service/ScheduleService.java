@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ScheduleService {
@@ -29,7 +28,7 @@ public class ScheduleService {
     }
 
     // Xóa lịch ca thi
-    public void deleteSchedule(String scheduleId) {
+    public void deleteSchedule(Integer scheduleId) {
         scheduleRepository.deleteById(scheduleId);
     }
 }

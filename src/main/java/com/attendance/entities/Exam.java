@@ -17,7 +17,7 @@ import java.util.UUID;
 public class Exam {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID examID;
+    private UUID examId;
 
     private String name;
 
@@ -28,10 +28,10 @@ public class Exam {
     private LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "scheduleId", referencedColumnName = "scheduleID")
+    @JoinColumn(name = "scheduleId", referencedColumnName = "scheduleId")
     private Schedule schedule;
 
     @ManyToOne
-    @JoinColumn(name = "roomID", referencedColumnName = "roomID")
+    @JoinColumn(name = "roomId", referencedColumnName = "roomId")
     private Room room;
 }

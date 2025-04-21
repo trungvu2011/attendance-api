@@ -22,6 +22,6 @@ public class CandidateInExam {
     private User candidate;
 
     @ManyToOne
-    @JoinColumn(name = "examId")
+    @JoinColumn(name = "examId", referencedColumnName = "examId")
     private Exam exam;
 }

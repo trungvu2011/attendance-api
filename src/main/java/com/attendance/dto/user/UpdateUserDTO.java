@@ -20,7 +20,6 @@ public class UpdateUserDTO {
     private LocalDate birth;
     private String password;
     private String citizenId;
-    private String faceImage;
     private User.Role role;
     
     // Cập nhật thông tin từ DTO vào Entity

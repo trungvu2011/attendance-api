@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
@@ -16,7 +14,8 @@ import java.util.UUID;
 @Getter @Setter
 public class Schedule {
     @Id
-    private String scheduleId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer scheduleId;
 
     private LocalTime startTime;
     private LocalTime endTime;

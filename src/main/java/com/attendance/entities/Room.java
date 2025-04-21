@@ -19,7 +19,7 @@ import java.util.UUID;
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID roomID;
+    private UUID roomId;
 
     private String name;
 

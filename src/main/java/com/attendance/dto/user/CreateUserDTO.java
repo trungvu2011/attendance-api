@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,8 +25,8 @@ public class CreateUserDTO {
     @Size(min = 6, message = "Mật khẩu phải có ít nhất 6 ký tự")
     private String password;
     
+    private LocalDate birth;
     private String citizenId;
-    private String faceImage;
     private User.Role role = User.Role.CANDIDATE;
     
     // Phương thức chuyển đổi từ DTO sang Entity
@@ -33,6 +35,7 @@ public class CreateUserDTO {
         user.setName(this.name);
         user.setEmail(this.email);
         user.setPassword(this.password);
+        user.setBirth(this.birth);
         user.setCitizenId(this.citizenId);
         user.setRole(this.role);
         return user;

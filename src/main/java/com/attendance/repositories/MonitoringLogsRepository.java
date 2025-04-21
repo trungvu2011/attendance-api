@@ -10,4 +10,6 @@ import java.util.UUID;
 @Repository
 public interface MonitoringLogsRepository extends JpaRepository<MonitoringLogs, UUID> {
     List<MonitoringLogs> findAll();
+    List<MonitoringLogs> findByCandidate_UserId(UUID candidateId);
+    List<MonitoringLogs> findByExam_ExamId(UUID examId);
 }

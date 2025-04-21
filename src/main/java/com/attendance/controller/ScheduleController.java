@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/schedules")
@@ -30,7 +29,7 @@ public class ScheduleController {
 
     // Cập nhật lịch học
     @PutMapping("/{scheduleId}")
-    public ResponseEntity<Schedule> updateSchedule(@PathVariable String scheduleId, @RequestBody Schedule schedule) {
+    public ResponseEntity<Schedule> updateSchedule(@PathVariable Integer scheduleId, @RequestBody Schedule schedule) {
         schedule.setScheduleId(scheduleId);
         Schedule updatedSchedule = scheduleService.updateSchedule(schedule);
         return new ResponseEntity<>(updatedSchedule, HttpStatus.OK);
@@ -38,7 +37,7 @@ public class ScheduleController {
 
     // Xóa lịch học
     @DeleteMapping("/{scheduleId}")
-    public ResponseEntity<Void> deleteSchedule(@PathVariable UUID scheduleId) {
+    public ResponseEntity<Void> deleteSchedule(@PathVariable Integer scheduleId) {
         scheduleService.deleteSchedule(scheduleId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

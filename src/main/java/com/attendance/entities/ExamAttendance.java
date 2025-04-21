@@ -15,14 +15,14 @@ import java.util.UUID;
 public class ExamAttendance {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID attendanceId;
+    private UUID id;
 
     @ManyToOne
-    @JoinColumn(name = "candidateID", referencedColumnName = "candidateId")
+    @JoinColumn(name = "candidateId", referencedColumnName = "userId")
     private User candidate;
 
     @ManyToOne
-    @JoinColumn(name = "examId", referencedColumnName = "examId")
+    @JoinColumn(name = "examId", referencedColumnName = "examID")
     private Exam exam;
 
     private boolean citizenCardVerified;
