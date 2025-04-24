@@ -24,7 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
-    
+
     @Autowired
     private TokenValidationFilter tokenValidationFilter;
 
@@ -55,19 +55,18 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> 
-                    auth.requestMatchers("/api/auth/**").permitAll()
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/user/register").permitAll()
-                        .requestMatchers("/api/user/all").hasRole("TEACHER")
-                        .anyRequest().authenticated()
-                );
+                        .requestMatchers("/api/user/all").hasRole("ADMIN")
+                        .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());
-        
+
         // Sử dụng TokenValidationFilter thay thế cho AuthTokenFilter
-        // http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        // http.addFilterBefore(authenticationJwtTokenFilter(),
+        // UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(tokenValidationFilter, UsernamePasswordAuthenticationFilter.class);
-        
+
         return http.build();
     }
 }

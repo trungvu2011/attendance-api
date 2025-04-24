@@ -11,7 +11,8 @@ import java.time.LocalTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +21,5 @@ public class Schedule {
     private LocalTime startTime;
     private LocalTime endTime;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
-
-    public enum Status {
-        UPCOMING, ONGOING, COMPLETED
-    }
+    private String name;
 }

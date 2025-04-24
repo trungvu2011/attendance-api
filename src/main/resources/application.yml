@@ -1,6 +1,13 @@
 spring:
   config:
     import: optional:file:.env[.properties]
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+      additional-exclude: static/**,public/**
+    livereload:
+      enabled: true
   datasource:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}

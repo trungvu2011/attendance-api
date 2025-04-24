@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ScheduleService {
@@ -15,6 +16,16 @@ public class ScheduleService {
     @Autowired
     public ScheduleService(ScheduleRepository scheduleRepository) {
         this.scheduleRepository = scheduleRepository;
+    }
+
+    // Lấy tất cả lịch ca thi
+    public List<Schedule> getAllSchedules() {
+        return scheduleRepository.findAll();
+    }
+
+    // Lấy lịch ca thi theo ID
+    public Optional<Schedule> getScheduleById(Integer scheduleId) {
+        return scheduleRepository.findById(scheduleId);
     }
 
     // Tạo mới một ca thi

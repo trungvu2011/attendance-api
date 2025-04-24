@@ -20,6 +20,13 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
+    // Lấy tất cả lịch ca thi
+    @GetMapping
+    public ResponseEntity<List<Schedule>> getAllSchedules() {
+        List<Schedule> schedules = scheduleService.getAllSchedules();
+        return new ResponseEntity<>(schedules, HttpStatus.OK);
+    }
+
     // Tạo mới một lịch học
     @PostMapping
     public ResponseEntity<Schedule> createSchedule(@RequestBody Schedule schedule) {

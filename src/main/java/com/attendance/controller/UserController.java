@@ -25,7 +25,9 @@ public class UserController {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService){ this.userService = userService;}
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     // Đăng ký người dùng mới
     @PostMapping("/register")
@@ -40,7 +42,7 @@ public class UserController {
         // Chuyển đổi DTO sang entity và lưu vào DB
         User user = createUserDTO.toEntity();
         User createdUser = userService.createUser(user);
-        
+
         // Trả về DTO không chứa mật khẩu
         return new ResponseEntity<>(UserDTO.fromEntity(createdUser), HttpStatus.CREATED);
     }
@@ -57,8 +59,8 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('TEACHER')")
-    public ResponseEntity<List<UserDTO>> getAllUsers(){
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         List<UserDTO> userDTOs = users.stream()
                 .map(UserDTO::fromEntity)
@@ -69,36 +71,36 @@ public class UserController {
     @PutMapping("/{userId}")
     public ResponseEntity<?> updateUser(@PathVariable UUID userId, @Valid @RequestBody UpdateUserDTO updateUserDTO) {
         Optional<User> userOpt = userService.getUserById(userId);
-        
+
         if (userOpt.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        // Kiểm tra xem có phải người dùng hiện tại hay TEACHER không
+        // Kiểm tra xem có phải người dùng hiện tại hay ADMIN không
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentEmail = authentication.getName();
         if (!currentEmail.equals(userOpt.get().getEmail()) && !authentication.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_TEACHER"))) {
+                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"))) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Bạn không có quyền sửa thông tin người dùng này!");
         }
-        
+
         // Kiểm tra xem email mới đã tồn tại chưa (nếu email thay đổi)
-        if (updateUserDTO.getEmail() != null && !updateUserDTO.getEmail().isEmpty() && 
-            !updateUserDTO.getEmail().equals(userOpt.get().getEmail()) && 
-            userService.existsByEmail(updateUserDTO.getEmail())) {
+        if (updateUserDTO.getEmail() != null && !updateUserDTO.getEmail().isEmpty() &&
+                !updateUserDTO.getEmail().equals(userOpt.get().getEmail()) &&
+                userService.existsByEmail(updateUserDTO.getEmail())) {
             return ResponseEntity.badRequest().body("Email đã được sử dụng!");
         }
-        
+
         User user = userOpt.get();
         updateUserDTO.updateEntity(user);
         User updatedUser = userService.updateUser(user);
-        
+
         return new ResponseEntity<>(UserDTO.fromEntity(updatedUser), HttpStatus.OK);
     }
 
     // Xóa User
     @DeleteMapping("/{userId}")
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID userId) {
         if (userService.getUserById(userId).isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -106,10 +108,10 @@ public class UserController {
         userService.deleteUser(userId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    
+
     // Tìm kiếm user theo tên hoặc email
     @GetMapping("/search")
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<UserDTO>> searchUsers(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String email) {
@@ -119,13 +121,13 @@ public class UserController {
                 .collect(Collectors.toList());
         return new ResponseEntity<>(userDTOs, HttpStatus.OK);
     }
-    
+
     // Lấy thông tin profile người dùng hiện tại
     @GetMapping("/profile")
     public ResponseEntity<?> getCurrentUserProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentEmail = authentication.getName();
-        
+
         Optional<User> userOpt = userService.getUserByEmail(currentEmail);
         if (userOpt.isPresent()) {
             UserDTO userDTO = UserDTO.fromEntity(userOpt.get());
@@ -134,13 +136,13 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
-    
+
     // API đổi mật khẩu
     @PostMapping("/change-password")
     public ResponseEntity<?> changePassword(@RequestParam String oldPassword, @RequestParam String newPassword) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentEmail = authentication.getName();
-        
+
         boolean success = userService.changePassword(currentEmail, oldPassword, newPassword);
         if (success) {
             return ResponseEntity.ok("Đổi mật khẩu thành công");
