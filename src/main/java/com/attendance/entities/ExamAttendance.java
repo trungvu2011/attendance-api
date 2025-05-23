@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -23,9 +24,9 @@ public class ExamAttendance {
 
     @ManyToOne
     @JoinColumn(name = "examId", referencedColumnName = "examID")
-    private Exam exam;
-
-    private boolean citizenCardVerified;
+    private Exam exam;    private boolean citizenCardVerified;
 
     private boolean faceVerified;
+    
+    private LocalDateTime attendanceTime;
 }
