@@ -52,9 +52,11 @@ public class ExamAttendanceService {
         return examAttendanceRepository.findByCandidate_UserId(candidateId);
     }
 
-    public ExamAttendance markAttendance(UUID candidateId, UUID examId, boolean citizenCardVerified, boolean faceVerified) {
+    public ExamAttendance markAttendance(UUID candidateId, UUID examId, boolean citizenCardVerified,
+            boolean faceVerified) {
         // Check if the candidate is registered for this exam
-        CandidateInExam candidateInExam = candidateInExamRepository.findByCandidate_UserIdAndExam_ExamId(candidateId, examId);
+        CandidateInExam candidateInExam = candidateInExamRepository.findByCandidate_UserIdAndExam_ExamId(candidateId,
+                examId);
         if (candidateInExam == null) {
             throw new IllegalArgumentException("Candidate is not registered for this exam");
         }
@@ -62,7 +64,7 @@ public class ExamAttendanceService {
         // Check if attendance is already recorded
         List<ExamAttendance> existingAttendance = examAttendanceRepository.findByCandidate_UserId(candidateId);
         for (ExamAttendance attendance : existingAttendance) {
-            if (attendance.getExam().getExamId().equals(examId)) {                // Update existing attendance record
+            if (attendance.getExam().getExamId().equals(examId)) { // Update existing attendance record
                 attendance.setCitizenCardVerified(citizenCardVerified);
                 attendance.setFaceVerified(faceVerified);
                 attendance.setAttendanceTime(LocalDateTime.now());
@@ -76,7 +78,8 @@ public class ExamAttendanceService {
 
         if (candidateOpt.isPresent() && examOpt.isPresent()) {
             ExamAttendance attendance = new ExamAttendance();
-            attendance.setCandidate(candidateOpt.get());            attendance.setExam(examOpt.get());
+            attendance.setCandidate(candidateOpt.get());
+            attendance.setExam(examOpt.get());
             attendance.setCitizenCardVerified(citizenCardVerified);
             attendance.setFaceVerified(faceVerified);
             attendance.setAttendanceTime(LocalDateTime.now());
@@ -95,15 +98,22 @@ public class ExamAttendanceService {
         // In a real application, this would call a face recognition service
         // For now, we'll just return true for demonstration purposes
         return true;
-    }    public void deleteAttendance(UUID attendanceId) {
+    }
+
+    public Optional<ExamAttendance> getAttendanceByCandidateAndExam(UUID candidateId, UUID examId) {
+        return examAttendanceRepository.findByCandidate_UserIdAndExam_ExamId(candidateId, examId);
+    }
+
+    public void deleteAttendance(UUID attendanceId) {
         examAttendanceRepository.deleteById(attendanceId);
     }
-    
+
     public List<ExamAttendance> getAttendancesByTimeRange(LocalDateTime start, LocalDateTime end) {
         return examAttendanceRepository.findByAttendanceTimeBetween(start, end);
     }
-    
-    public List<ExamAttendance> getAttendancesByExamIdAndTimeRange(UUID examId, LocalDateTime start, LocalDateTime end) {
+
+    public List<ExamAttendance> getAttendancesByExamIdAndTimeRange(UUID examId, LocalDateTime start,
+            LocalDateTime end) {
         return examAttendanceRepository.findByExam_ExamIdAndAttendanceTimeBetween(examId, start, end);
     }
 }

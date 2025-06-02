@@ -122,6 +122,18 @@ public class UserController {
         return new ResponseEntity<>(userDTOs, HttpStatus.OK);
     }
 
+    @GetMapping("/citizen-id/{citizenId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getUserByCitizenId(@PathVariable String citizenId) {
+        Optional<User> userOpt = userService.getUserByCitizenId(citizenId);
+        if (userOpt.isPresent()) {
+            UserDTO userDTO = UserDTO.fromEntity(userOpt.get());
+            return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     // Lấy thông tin profile người dùng hiện tại
     @GetMapping("/profile")
     public ResponseEntity<?> getCurrentUserProfile() {

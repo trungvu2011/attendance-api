@@ -33,7 +33,7 @@ public class RefreshTokenService {
 
         // Xóa token cũ nếu có - using the corrected method name
         refreshTokenRepository.findByUser_UserId(userId).ifPresent(token -> refreshTokenRepository.delete(token));
-        
+
         // Tạo token mới
         refreshToken.setUser(userRepository.findById(userId).get());
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));

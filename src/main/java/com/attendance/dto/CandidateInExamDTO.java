@@ -17,6 +17,7 @@ public class CandidateInExamDTO {
     private UUID candidateId;
     private String candidateName;
     private String candidateEmail;
+    private String candidateCitizenId;
     private UUID examId;
     private String examName;
 
@@ -29,6 +30,7 @@ public class CandidateInExamDTO {
             dto.setCandidateId(candidate.getUserId());
             dto.setCandidateName(candidate.getName());
             dto.setCandidateEmail(candidate.getEmail());
+            dto.setCandidateCitizenId(candidate.getCitizenId());
         }
 
         Exam exam = candidateInExam.getExam();

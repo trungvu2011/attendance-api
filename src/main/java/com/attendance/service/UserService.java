@@ -2,6 +2,7 @@ package com.attendance.service;
 
 import com.attendance.entities.User;
 import com.attendance.repositories.UserRepository;
+import org.apache.xmlbeans.impl.xb.xsdschema.Attribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -23,18 +24,26 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<User> getAllUsers() { return userRepository.findAll();}
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
-    public Optional<User> getUserById(UUID userId){ return userRepository.findById(userId);}
-    
-    public Optional<User> getUserByEmail(String email) { return userRepository.findByEmail(email); }
+    public Optional<User> getUserById(UUID userId) {
+        return userRepository.findById(userId);
+    }
 
-    public boolean existsByEmail(String email) { return userRepository.existsByEmail(email); }
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
 
-    // Tạo mới bản ghi User - Mã hóa mật khẩu trước khi lưu 
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    // Tạo mới bản ghi User - Mã hóa mật khẩu trước khi lưu
     public User createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user); 
+        return userRepository.save(user);
     }
 
     // Cap nhat thong tin - Kiểm tra xem có cần mã hóa mật khẩu không
@@ -43,7 +52,8 @@ public class UserService {
             Optional<User> existingUser = userRepository.findById(user.getUserId());
             if (existingUser.isPresent()) {
                 String currentPassword = existingUser.get().getPassword();
-                // Nếu mật khẩu mới khác mật khẩu cũ và không bắt đầu bằng $2a$ (định dạng của BCrypt)
+                // Nếu mật khẩu mới khác mật khẩu cũ và không bắt đầu bằng $2a$ (định dạng của
+                // BCrypt)
                 if (!user.getPassword().equals(currentPassword) && !user.getPassword().startsWith("$2a$")) {
                     user.setPassword(passwordEncoder.encode(user.getPassword()));
                 }
@@ -53,31 +63,36 @@ public class UserService {
     }
 
     // Xoa user
-    public void deleteUser(UUID userId){ userRepository.deleteById(userId);}
-    
+    public void deleteUser(UUID userId) {
+        userRepository.deleteById(userId);
+    }
+
     // Tìm kiếm user theo tên hoặc email
     public List<User> searchUsers(String name, String email) {
         User example = new User();
-        
+
         if (name != null && !name.isEmpty()) {
             example.setName(name);
         }
-        
+
         if (email != null && !email.isEmpty()) {
             example.setEmail(email);
         }
-        
         ExampleMatcher matcher = ExampleMatcher.matching()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
                 .withIgnoreCase();
-                
+
         return userRepository.findAll(Example.of(example, matcher));
     }
-    
+
+    public Optional<User> getUserByCitizenId(String citizenId) {
+        return userRepository.findByCitizenId(citizenId);
+    }
+
     // Đổi mật khẩu
     public boolean changePassword(String email, String oldPassword, String newPassword) {
         Optional<User> userOpt = userRepository.findByEmail(email);
-        
+
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             // Kiểm tra mật khẩu cũ
@@ -87,7 +102,7 @@ public class UserService {
                 return true;
             }
         }
-        
+
         return false;
     }
 }
